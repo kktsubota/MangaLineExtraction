@@ -1,11 +1,18 @@
 import os
 import sys
+os.environ['KERAS_BACKEND'] = 'theano'
+os.environ['THEANO_FLAGS']='device=cuda0,floatX=float32'
+
 import numpy as np
 
 import glob
 import fnmatch
 
 import cv2
+
+from keras import backend as K
+K.set_image_dim_ordering('th')
+K.set_epsilon(1e-7)
 
 from keras.models import Sequential
 from keras.layers import Dense
@@ -17,7 +24,7 @@ import theano
 theano.config.openmp = True
 
 
-from keras import backend as K
+
 def get_activations(model, layer, X_batch):
     get_activations = K.function([model.layers[0].input, K.learning_phase()], model.layers[layer].output)
     activations = get_activations([X_batch,0])
@@ -36,7 +43,7 @@ def loadImages(folder):
 batch_size = 1
 
 
-def loadModel(home):
+def loadModel():
 # load json and create model
     json_file = open('./erika.json', 'r')
     loaded_model_json = json_file.read()
@@ -47,8 +54,8 @@ def loadModel(home):
     return model
 
 
-def test(home):
-    model = loadModel(home)
+def test():
+    model = loadModel()
     for imname in loadImages(sys.argv[1]):
         print(imname)
         src = cv2.imread(imname,cv2.IMREAD_GRAYSCALE)
@@ -82,4 +89,4 @@ def test(home):
         cv2.imwrite(sys.argv[2]+"/"+tail+".png",result[0:src.shape[0],0:src.shape[1]])
 
 if __name__ == "__main__":
-    test(sys.argv[1])
+    test()
