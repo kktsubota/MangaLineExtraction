@@ -20,6 +20,23 @@ Please use this file as the pre-trained weight for testing.
 It's strongly recommended to use virtualenv to build the testing environment.
 
 
+## How To Setup
+### python libraries
+```bash
+conda install pygpu=0.6
+conda install theano=0.9
+conda install h5py
+pip installl opencv-python
+pip install keras==1.2.2
+```
+
+### environment
+Set cuda8.0_cudnn5.1 on $HOME/.local/cuda8.0_cudnn5.1
+
+```bash
+$ source envrc
+```
+
 ## Forward Compatibility
 
 As this project is build against theano, you need to modify the dim orderding into "th"/"channels_first" in your keras.json.

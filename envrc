@@ -1,0 +1,6 @@
+source activate manga_line
+# because cudnn5.1 is required by theano=0.9
+export CUDA_PATH="$HOME/.local/cuda-8.0_cudnn5.1"
+export CUDA_ROOT="$CUDA_PATH"
+export LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
+export PATH="$CUDA_PATH/bin:$PATH"

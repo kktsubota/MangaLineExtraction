@@ -1,7 +1,7 @@
 import os
 import sys
 os.environ['KERAS_BACKEND'] = 'theano'
-os.environ['THEANO_FLAGS']='device=cuda0,floatX=float32'
+os.environ['THEANO_FLAGS']='device=gpu,floatX=float32'
 
 import numpy as np
 
@@ -68,7 +68,6 @@ def test():
         patch = np.empty((1,1,rows,cols),dtype="float32")
         patch[0,0,:,:] = np.ones((rows,cols),dtype="float32")*255.0
         patch[0,0,0:src.shape[0],0:src.shape[1]] = src
-
         out = model.predict(patch, batch_size=batch_size)
         if isinstance(out, list):
             out = out[0]
