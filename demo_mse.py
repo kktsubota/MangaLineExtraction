@@ -1,5 +1,5 @@
+import argparse
 import os
-import sys
 os.environ['KERAS_BACKEND'] = 'theano'
 os.environ['THEANO_FLAGS']='device=gpu,floatX=float32'
 
@@ -55,15 +55,19 @@ def loadModel():
 
 
 def test():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_dir')
+    parser.add_argument('output_dir')
+    args = parser.parse_args()
+
     model = loadModel()
-    for imname in loadImages(sys.argv[1]):
+    imnames = loadImages(args.input_dir)
+    for imname in imnames:
         print(imname)
         src = cv2.imread(imname,cv2.IMREAD_GRAYSCALE)
 
         rows = int(src.shape[0]/16 + 1)*16
         cols = int(src.shape[1]/16 + 1)*16
-
-    
 
         patch = np.empty((1,1,rows,cols),dtype="float32")
         patch[0,0,:,:] = np.ones((rows,cols),dtype="float32")*255.0
@@ -81,11 +85,9 @@ def test():
         result2 = cv2.normalize(result,0,255)
 
         head, tail = os.path.split(imname)
-        #misc.imsave(sys.argv[2]+"/"+prefix+"_"+tail,result2[0:src.shape[0],0:src.shape[1]])
-
         result[result>255] = 255
         result[result<0] = 0
-        cv2.imwrite(sys.argv[2]+"/"+tail+".png",result[0:src.shape[0],0:src.shape[1]])
+        cv2.imwrite(args.output_dir+"/"+tail+".png", result[0:src.shape[0],0:src.shape[1]])
 
 if __name__ == "__main__":
     test()
