@@ -38,7 +38,7 @@ def loadImages(folder):
         for filename in fnmatch.filter(filenames, '*'):
             matches.append(os.path.join(root, filename))
    
-    return matches
+    return sorted(matches)
 
 batch_size = 1
 
@@ -58,10 +58,17 @@ def test():
     parser = argparse.ArgumentParser()
     parser.add_argument('input_dir')
     parser.add_argument('output_dir')
+    parser.add_argument('--split_num', type=int, default=1)
+    parser.add_argument('--split', type=int, default=0)
     args = parser.parse_args()
+    assert args.split_num > args.split >= 0
+    assert args.split_num > 0
 
     model = loadModel()
     imnames = loadImages(args.input_dir)
+    # split imnames into split_num pieces to run in multi-thread
+    imnames = imnames[args.split::args.split_num]
+
     for imname in imnames:
         print(imname)
         src = cv2.imread(imname,cv2.IMREAD_GRAYSCALE)
