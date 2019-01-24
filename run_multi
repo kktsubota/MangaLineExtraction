@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+import argparse
+import subprocess
+
+
+"""
+./run_multi hoge fuga --devices 1 3 --process_num 2
+"""
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_dir')
+    parser.add_argument('output_dir')
+    parser.add_argument('--devices', nargs='*')
+    parser.add_argument('--process_num', type=int)
+    args = parser.parse_args()
+
+    assert args.process_num % len(args.devices) == 0
+    process_per_gpu = args.process_num // len(args.devices)
+
+    commands = list()
+    for j, device in enumerate(args.devices):
+        for i in range(process_per_gpu):
+            split = j * process_per_gpu + i
+            cmd = """CUDA_VISIBLE_DEVICES={} python demo_mse.py {} {}\
+                  --split {} --split_num {}""".format(
+                    device, args.input_dir, args.output_dir,
+                    split, args.process_num)
+            commands.append(cmd)
+
+    processes = [subprocess.Popen(cmd, shell=True) for cmd in commands]
+    # processes = [subprocess.Popen('echo "{}"'.format(cmd), shell=True) for cmd in commands]
+    for p in processes:
+        p.wait()
+
+
+if __name__ == "__main__":
+    main()
