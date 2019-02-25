@@ -45,11 +45,11 @@ For details of testing with latest version of tensorflow, please refer to #1 .
 
 ## Usage
 
-        test_mse.py [source folder] [output folder]
+        demo_mse.py [source folder] [output folder]
 
 Example:
 
-        test_mse.py ./Arisa ./output
+        demo_mse.py ./Arisa ./output
 
 The outputs will be clipped to 0-255.
 
