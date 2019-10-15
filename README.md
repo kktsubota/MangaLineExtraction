@@ -10,7 +10,7 @@ Please use this file as the pre-trained weight for testing.
 
 ## Requirement
 
-+  Python3
++  Python3 (< 3.7)
 +  keras==1.2.0 (1.2.2 is okay too)
 +  theano==0.9
 +  python-opencv
@@ -23,7 +23,7 @@ It's strongly recommended to use virtualenv to build the testing environment.
 ## How To Setup
 ### python libraries
 ```bash
-conda install pygpu=0.6
+conda install -c anaconda pygpu=0.6
 conda install theano=0.9
 conda install h5py
 pip installl opencv-python
