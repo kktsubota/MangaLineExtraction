@@ -26,7 +26,7 @@ It's strongly recommended to use virtualenv to build the testing environment.
 conda install -c anaconda pygpu=0.6
 conda install theano=0.9
 conda install h5py
-pip installl opencv-python
+pip install opencv-python
 pip install keras==1.2.2
 ```
 
